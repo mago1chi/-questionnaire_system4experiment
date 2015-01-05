@@ -1,0 +1,35 @@
+{% extends 'evaluate/base.html' %}
+
+{% block title %}confirm{% endblock %}
+
+{% block body %}
+  {% if new_user_name %}
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+      <h3><b>新規ユーザ</b>　{{ new_user_name }}　として実験を開始します．</h3><br />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+      <a href="{% url 'evaluate:register' %}" class="btn btn-info">開始</a>　　　<a href="{% url 'evaluate:index' %}" class="btn btn-danger">キャンセル</a>
+    </div>
+  </div>
+  {% endif %}
+  {% if succeed_user_name %}
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+      <h3><b>既存ユーザ</b>　{{ succeed_user_name }}　として途中から実験を開始します．</h3><br />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+      <h4>評価済み：{{ finished_rate }}</h4><br />
+    </div>
+  </div> 
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+      <a href="{% url 'evaluate:display' %}" class="btn btn-info">開始</a>　　　<a href="{% url 'evaluate:index' %}" class="btn btn-danger">キャンセル</a>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}

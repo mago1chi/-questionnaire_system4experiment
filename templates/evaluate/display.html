@@ -1,0 +1,125 @@
+{% extends 'evaluate/base.html' %}
+
+{% block title %}評価用ページ{% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-7 col-sm-4 col-sm-offset-9 col-md-4 col-md-offset-8">
+      <label>{{ user_name }}</label>
+      <a href="{% url 'evaluate:index' %}" class="btn btn-warning">ログアウト</a><br />
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3 text-center">
+      <h3>{{ finished_rate }}</h3>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4" id="card">
+      <br />
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          <img src="/static/evaluate/images/{{ image_name }}" class="img-responsive img-rounded img-responsive-overwrite">
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1" id="tweet">
+          {{ tweet }} 
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="text-center">
+      <div class="col-xs-10 col-xs-offset-1 col-sm8 col-sm-offset-2 col-md-4 col-md-offset-4" id="tags">
+        {{ tag_str }}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="text-center">
+      <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+        <form action="{% url 'evaluate:update' %}" method="POST" name="input_form" role="form">
+        {% csrf_token %}
+          <div class="form-group">
+            <table border="0" class="table table-striped">
+              <tr>
+                <td>提示されたタグの中に<b>適切なもの</b>が含まれていますか？</td>
+                <td>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="bingo" value="1" onclick="onRadioButtonDetect();">はい
+                    </label>
+                  </div>
+                </td>
+                <td>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="bingo" value="0" onclick="onRadioButtonDetect();">いいえ
+                    </label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>提示されたタグの中に<b>不適切なもの</b>が含まれていますか？</td>
+                <td>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="bad" value="1" onclick="onRadioButtonDetect();">はい
+                    </label>
+                  </div>
+                </td>
+                <td>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="bad" value="0" onclick="onRadioButtonDetect();">いいえ
+                    </label>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div id="decide"></div><br />
+        </form>
+      </div>
+    </div>
+  </div>
+  <br />
+  
+  
+  <script type="text/javascript" language="javascript">
+    function onRadioButtonDetect() {
+      var lda_check;
+      var raw_check;
+      
+      is_lda_checked = false;
+      for(var i = 0; i  < document.input_form.A.length; i++){
+        if(document.input_form.A[i].checked){
+          is_lda_checked = true;
+          lda_check = document.input_form.A[i].value;
+          break;
+        }
+      }
+      
+      is_raw_checked = false;
+      for(var i = 0; i  < document.input_form.B.length; i++){
+        if(document.input_form.B[i].checked){
+          is_raw_checked = true;
+          raw_check = document.input_form.B[i].value;
+          break;
+        }
+      }
+      
+      if(is_lda_checked && is_raw_checked){
+        document.getElementById("decide").innerHTML = "<button type='SUBMIT' value='次へ' class='btn btn-info'>次へ</button>";
+      }
+    }
+  </script>
+{% endblock %}
+  
+
