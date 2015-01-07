@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from evaluate.models import User
 from evaluate.models import Results
+from evaluate.models import Exp_lda
 import psycopg2
 import random
 import time
@@ -28,7 +29,7 @@ def confirm(request):
     request.session['user_id'] = succeed_user.id
     
     total_images = len(Results.objects.filter(user_id=succeed_user.id).values())
-    marked_images = len(Results.objects.filter(user_id=succeed_user.id).exclude(lda_score=-1).values())
+    marked_images = len(Results.objects.filter(user_id=succeed_user.id).exclude(bingo=-1).values())
     if marked_images == total_images:
       return render(request, 'evaluate/end.html', {'user_name': tmp_user_name})
     
@@ -76,7 +77,7 @@ def display(request):
   random.seed(datetime.datetime.now())
   
   total_images = len(Results.objects.filter(user_id=user_id).values())
-  marked_images = len(Results.objects.filter(user_id=user_id).exclude(lda_score=-1).values())
+  marked_images = len(Results.objects.filter(user_id=user_id).exclude(bingo=-1).values())
   finished_rate = "{0}/{1}".format(marked_images+1, total_images)
   
   if marked_images == total_images:
@@ -108,12 +109,7 @@ def display(request):
   #raw_tag = target_image_tag.raw_tag
   
   target_image_tag = Exp_lda.objects.filter(tweet_id=user_info['tweet_id']).values('tag')
-  tag_str = ""
-  for i in range(len(target_image_tag)):
-    tag_str += target_image_tag[i]
-    
-    if i != len(target_image_tag)-1:
-      tag_str += "，"
+  tag_list = [x for x in map(lambda y: y['tag'], target_image_tag)]
 
   file_path = "evaluate/static/evaluate/images/{0}.jpg".format(tmp_image_id)
   if not os.path.isfile(file_path):
@@ -123,7 +119,7 @@ def display(request):
   
   static_image_path = "{0}.jpg".format(tmp_image_id)
   
-  template_dic = {'image_name': static_image_path, 'tweet': tmp_tweet, 'tag_str': tag_str, 'finished_rate': finished_rate, 'user_name': user_name}
+  template_dic = {'image_name': static_image_path, 'tweet': tmp_tweet, 'tag_list': tag_list, 'finished_rate': finished_rate, 'user_name': user_name}
   
   return render(request, 'evaluate/display.html', template_dic)
 

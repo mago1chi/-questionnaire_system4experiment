@@ -36,11 +36,14 @@
   <br />
   <div class="row">
     <div class="text-center">
-      <div class="col-xs-10 col-xs-offset-1 col-sm8 col-sm-offset-2 col-md-4 col-md-offset-4" id="tags">
-        {{ tag_str }}
+      <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4" id="tags">
+        {% for each_tag in tag_list %}
+          <button class="btn btn-primary btn-overwrite">{{ each_tag }}</button>
+        {% endfor %}
       </div>
     </div>
   </div>
+  <br />
   <div class="row">
     <div class="text-center">
       <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
@@ -49,7 +52,7 @@
           <div class="form-group">
             <table border="0" class="table table-striped">
               <tr>
-                <td>提示されたタグの中に<b>適切なもの</b>が含まれていますか？</td>
+                <td>提示された単語の中に<b>適切なもの</b>が含まれていますか？</td>
                 <td>
                   <div class="radio">
                     <label>
@@ -66,7 +69,7 @@
                 </td>
               </tr>
               <tr>
-                <td>提示されたタグの中に<b>不適切なもの</b>が含まれていますか？</td>
+                <td>提示された単語の中に<b>不適切なもの</b>が含まれていますか？</td>
                 <td>
                   <div class="radio">
                     <label>
@@ -94,23 +97,23 @@
   
   <script type="text/javascript" language="javascript">
     function onRadioButtonDetect() {
-      var lda_check;
-      var raw_check;
+      var bingo_check;
+      var bad_check;
       
       is_lda_checked = false;
-      for(var i = 0; i  < document.input_form.A.length; i++){
-        if(document.input_form.A[i].checked){
+      for(var i = 0; i  < document.input_form.bingo.length; i++){
+        if(document.input_form.bingo[i].checked){
           is_lda_checked = true;
-          lda_check = document.input_form.A[i].value;
+          bingo_check = document.input_form.bingo[i].value;
           break;
         }
       }
       
       is_raw_checked = false;
-      for(var i = 0; i  < document.input_form.B.length; i++){
-        if(document.input_form.B[i].checked){
+      for(var i = 0; i  < document.input_form.bad.length; i++){
+        if(document.input_form.bad[i].checked){
           is_raw_checked = true;
-          raw_check = document.input_form.B[i].value;
+          bad_check = document.input_form.bad[i].value;
           break;
         }
       }

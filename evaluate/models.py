@@ -1,13 +1,13 @@
 from django.db import models
 
 
-class Exp_raw(models.Model):
-  tweet_id = models.BigIntegerField()
-  tag = models.TextField()
-
-  def __str__(self):
-    return self.tag
-
+#class Exp_raw(models.Model):
+#  tweet_id = models.BigIntegerField()
+#  tag = models.TextField()
+#
+#  def __str__(self):
+#    return self.tag
+#
 
 class Exp_lda(models.Model):
   tweet_id = models.BigIntegerField()
@@ -17,10 +17,10 @@ class Exp_lda(models.Model):
     return self.tag
 
 
-class Chosen_tags(models.Model):
-  tweet_id = models.BigIntegerField()
-  lda_tag = models.TextField()
-  raw_tag = models.TextField()
+#class Chosen_tags(models.Model):
+#  tweet_id = models.BigIntegerField()
+#  lda_tag = models.TextField()
+#  raw_tag = models.TextField()
 
 
 class Chosen_tweet(models.Model):
@@ -40,7 +40,8 @@ class Chosen_tweet(models.Model):
 class Results(models.Model):
   user_id = models.TextField()
   tweet_id = models.BigIntegerField()
-  bingo = models.IntegerField()
+  tag = models.TextField()
+  good = models.IntegerField()
   bad = models.IntegerField()
 
 
